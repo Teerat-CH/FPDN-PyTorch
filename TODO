@@ -1,0 +1,9 @@
+- experiment with larger network
+- improved the loss summation
+- use lower precision floating point precision (float16)
+- research if we can tell pytorch how to do backward compute gradient without letting pytorch implies the gradient
+
+
+- Look into larger model with more summation or wider range of value to see if it make a difference to the output
+- Cross check with aaron to see if the implementation of improved dot and summation are correct
+- some intermediate model can be convolution or llm or anything with more summation
