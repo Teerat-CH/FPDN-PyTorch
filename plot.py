@@ -1,10 +1,10 @@
 from matplotlib import pyplot as plt
 from baseline import loss_logs as baseline_loss
-# from improved import loss_logs as kahan_loss_true
-from improve_test import loss_logs as kahan_loss_false
+from improved import loss_logs as kahan_loss_true
+# from improve_test import loss_logs as kahan_loss_false
 import torch
 
-differences = [a - b for a, b in zip(kahan_loss_false, baseline_loss)]
+differences = [b - a for a, b in zip(kahan_loss_true, baseline_loss)]
 
 plt.figure(figsize=(10, 5))
 plt.plot(differences, marker='o')

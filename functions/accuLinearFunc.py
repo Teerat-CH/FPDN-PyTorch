@@ -19,7 +19,7 @@ class AccuLinearFunction(torch.autograd.Function):
             return torch.from_numpy(output).to(input.device, dtype=input.dtype)
         else:
             # Use standard torch matrix multiplication
-            output = input @ weight.T + bias
+            output = torch.addmm(bias, input, weight.T)
             return output
 
     @staticmethod

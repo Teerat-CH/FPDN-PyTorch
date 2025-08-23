@@ -1,11 +1,16 @@
+import sys
+import os
+import json
+
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(project_root)
+
 import pandas as pd
 import numpy as np
 import torch
 import torch.nn as nn
-from layers.accuLinear import AccuLinearLayer
-from KahanMSELoss import KahanMSELoss
+from settings import hidden_size, output_size, learning_rate, epochs, precision, X, y, seed
 
-seed = 42
 torch.manual_seed(seed)
 np.random.seed(seed)
 if torch.cuda.is_available():
@@ -13,33 +18,22 @@ if torch.cuda.is_available():
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-precision = torch.float64
-
-data = pd.read_csv("data/GPA.csv", delimiter=',').head(8000)
-features = [feature for feature in data.columns if feature != 'gpa']
-X = data[features]
-y = data.gpa
-
-X = (X - X.min()) / (X.max() - X.min())
-
 X_tensor = torch.tensor(X.values, dtype=precision)
 y_tensor = torch.tensor(y.values, dtype=precision).unsqueeze(1)
 
 input_size = X_tensor.shape[1]
-hidden_size = 128
-output_size = 1
-learning_rate = 0.01
-epochs = 25
 
 model = nn.Sequential(
-    AccuLinearLayer(input_size, hidden_size, True),
+    nn.Linear(input_size, hidden_size, True),
     nn.ReLU(),
-    AccuLinearLayer(hidden_size, output_size, True)
+    nn.Linear(hidden_size, hidden_size, True),
+    nn.ReLU(),
+    nn.Linear(hidden_size, output_size, True)
 )
 
 model.to(precision)
 
-loss_fn = KahanMSELoss(kahan=True)
+loss_fn = nn.MSELoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
 
 loss_logs = []
@@ -54,3 +48,17 @@ for epoch in range(epochs):
 
     print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item()}")
     loss_logs.append(loss.item())
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+filename = os.path.join(script_dir, "results/baseline_pytorch.json")
+
+if os.path.exists(filename):
+    with open(filename, "r") as f:
+        data = json.load(f)
+else:
+    data = {}
+
+data[seed] = loss_logs
+
+with open(filename, "w") as f:
+    json.dump(data, f, indent=4)

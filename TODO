@@ -7,3 +7,10 @@
 - Look into larger model with more summation or wider range of value to see if it make a difference to the output
 - Cross check with aaron to see if the implementation of improved dot and summation are correct
 - some intermediate model can be convolution or llm or anything with more summation
+- Write what I have done so far and what's the plan should be 
+
+- one or two magnitude more than gpa feature (100-1000) - ask phil
+
+hypothesis - if you have a lot of feature may be this is important
+
+- make logs for each stop optional.
