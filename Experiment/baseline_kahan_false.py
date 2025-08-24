@@ -1,5 +1,6 @@
 import sys
 import os
+import json
 
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(project_root)
@@ -48,7 +49,32 @@ for epoch in range(epochs):
     loss.backward()
     optimizer.step()
 
-    print(loss.item())
+    print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item()}")
     loss_logs.append(loss.item())
 
-print(loss_logs)
+script_dir = os.path.dirname(os.path.abspath(__file__))
+results_filename = os.path.join(script_dir, "results/baseline_kahan_false.json")
+os.makedirs(os.path.dirname(results_filename), exist_ok=True)
+
+if os.path.exists(results_filename):
+    with open(results_filename, "r") as f:
+        data = json.load(f)
+else:
+    data = {}
+
+data[str(seed)] = loss_logs
+
+with open(results_filename, "w") as f:
+    json.dump(data, f, indent=4)
+
+save_dir = os.path.join(script_dir, "savemodels/baseline_kahan_false")
+os.makedirs(save_dir, exist_ok=True)
+model_path = os.path.join(save_dir, f"{seed}.pth")
+
+torch.save({
+    'model_state_dict': model.state_dict(),
+    'optimizer_state_dict': optimizer.state_dict(),
+    'epochs': epochs,
+    'loss_logs': loss_logs,
+    'seed': seed
+}, model_path)

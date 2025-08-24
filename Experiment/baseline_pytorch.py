@@ -30,7 +30,6 @@ model = nn.Sequential(
     nn.ReLU(),
     nn.Linear(hidden_size, output_size, True)
 )
-
 model.to(precision)
 
 loss_fn = nn.MSELoss()
@@ -50,15 +49,28 @@ for epoch in range(epochs):
     loss_logs.append(loss.item())
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-filename = os.path.join(script_dir, "results/baseline_pytorch.json")
+results_filename = os.path.join(script_dir, "results/baseline_pytorch.json")
+os.makedirs(os.path.dirname(results_filename), exist_ok=True)
 
-if os.path.exists(filename):
-    with open(filename, "r") as f:
+if os.path.exists(results_filename):
+    with open(results_filename, "r") as f:
         data = json.load(f)
 else:
     data = {}
 
-data[seed] = loss_logs
+data[str(seed)] = loss_logs
 
-with open(filename, "w") as f:
+with open(results_filename, "w") as f:
     json.dump(data, f, indent=4)
+
+save_dir = os.path.join(script_dir, "savemodels/baseline_pytorch")
+os.makedirs(save_dir, exist_ok=True)
+model_path = os.path.join(save_dir, f"{seed}.pth")
+
+torch.save({
+    'model_state_dict': model.state_dict(),
+    'optimizer_state_dict': optimizer.state_dict(),
+    'epochs': epochs,
+    'loss_logs': loss_logs,
+    'seed': seed
+}, model_path)

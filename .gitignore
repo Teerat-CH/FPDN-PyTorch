@@ -8,6 +8,7 @@ data/train.csv
 # C extensions
 *.so
 
+/Experiment/savemodels
 # Distribution / packaging
 .Python
 build/

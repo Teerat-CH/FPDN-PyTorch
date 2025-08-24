@@ -4,10 +4,10 @@ import sys
 import json
 
 scripts_to_run = [
-    "baseline_pytorch.py",
+    "improved_kahan_true.py",
 ]
 
-num_runs = 10
+num_runs = 100
 
 experiment_dir = os.path.dirname(os.path.abspath(__file__))
 

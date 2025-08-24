@@ -5,8 +5,8 @@ import os
 hidden_size = 128
 output_size = 1
 learning_rate = 0.01
-epochs = 20
-precision = torch.float64
+epochs = 25
+precision = torch.float32
 
 seed = int(os.environ.get("RANDOM_STATE", 42))
 
