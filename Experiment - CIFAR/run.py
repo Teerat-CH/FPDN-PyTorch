@@ -4,7 +4,7 @@ import sys
 import json
 
 scripts_to_run = [
-    "improved.py",
+    "baseline_kahan_false.py",
 ]
 
 num_runs = 100

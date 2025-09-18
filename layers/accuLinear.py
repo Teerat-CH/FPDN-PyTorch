@@ -4,11 +4,11 @@ import numpy as np
 from functions.accuLinearFunc import AccuLinearFunction
 
 class AccuLinearLayer(nn.Module):
-    def __init__(self, input_features, output_features, kahan=False):
+    def __init__(self, input_features, output_features, compensated=False):
         super().__init__()
         self.input_features = input_features
         self.output_features = output_features
-        self.kahan = kahan
+        self.compensated = compensated
 
         # Define trainable parameters (weight and bias)
         # nn.Parameter ensures they are registered as model parameters
@@ -26,7 +26,7 @@ class AccuLinearLayer(nn.Module):
         In the forward pass, we apply our custom function.
         """
         # Use the .apply() method to call the custom autograd function
-        return AccuLinearFunction.apply(x, self.weight, self.bias, self.kahan)
+        return AccuLinearFunction.apply(x, self.weight, self.bias, self.compensated)
 
     def extra_repr(self):
-        return f'input_features={self.input_features}, output_features={self.output_features}, kahan={self.kahan}'
+        return f'input_features={self.input_features}, output_features={self.output_features}, compensated={self.compensated}'

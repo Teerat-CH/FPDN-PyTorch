@@ -15,9 +15,8 @@ with open("Experiment - Layer size/results/improved_kahan_true_2048.json", "r") 
 arrA = to_array(expA)
 arrB = to_array(expB)
 
-diffs = arrA - arrB  # shape: (num_runs, num_epochs)
+diffs = arrA - arrB
 
-# Find the run with the highest total absolute difference
 run_scores = np.sum(np.abs(diffs), axis=1)
 max_idx = np.argmax(run_scores)
 

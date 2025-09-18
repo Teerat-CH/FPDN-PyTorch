@@ -1,21 +1,21 @@
 import torch
 import torch.nn as nn
 import numpy as np
-from kahan import kahan_dot
+from compensated_ops import compensated_matmul
 
 class AccuLinearFunction(torch.autograd.Function):
     @staticmethod
-    def forward(ctx, input, weight, bias, kahan):
-        # Save tensors for backward pass and the kahan flag
+    def forward(ctx, input, weight, bias, compensated):
+        # Save tensors for backward pass and the compensated flag
         ctx.save_for_backward(input, weight)
-        ctx.kahan = kahan
+        ctx.compensated = compensated
         
-        if kahan:
-            # Convert tensors to numpy for kahan_dot
+        if compensated:
+            # Convert tensors to numpy for compensated_matmul
             input_np = input.detach().numpy()
             weight_np = weight.T.detach().numpy() # Transpose weight for matmul
             bias_np = bias.detach().numpy()
-            output = kahan_dot(input_np, weight_np) + bias_np
+            output = compensated_matmul(input_np, weight_np) + bias_np
             return torch.from_numpy(output).to(input.device, dtype=input.dtype)
         else:
             # Use standard torch matrix multiplication
@@ -25,18 +25,18 @@ class AccuLinearFunction(torch.autograd.Function):
     @staticmethod
     def backward(ctx, grad_output):
         input_tensor, weight = ctx.saved_tensors
-        kahan = ctx.kahan
+        compensated = ctx.compensated
 
         grad_input = grad_weight = grad_bias = None
 
-        if kahan:
-            # Convert tensors to numpy for kahan_dot
+        if compensated:
+            # Convert tensors to numpy for compensated_matmul
             grad_output_np = grad_output.detach().numpy()
             input_np = input_tensor.detach().numpy()
             weight_np = weight.detach().numpy()
 
-            grad_input_np = kahan_dot(grad_output_np, weight_np)
-            grad_weight_np = kahan_dot(grad_output_np.T, input_np)
+            grad_input_np = compensated_matmul(grad_output_np, weight_np)
+            grad_weight_np = compensated_matmul(grad_output_np.T, input_np)
             grad_bias_np = grad_output_np.sum(axis=0)
 
             # Convert results back to tensors
@@ -50,5 +50,5 @@ class AccuLinearFunction(torch.autograd.Function):
             grad_bias = grad_output.sum(dim=0)
 
         # The number of returned gradients must match the number of inputs to forward
-        # (excluding ctx), so we return None for the 'kahan' input.
+        # (excluding ctx), so we return None for the 'compensated' input.
         return grad_input, grad_weight, grad_bias, None
