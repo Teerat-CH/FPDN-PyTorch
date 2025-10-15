@@ -10,7 +10,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from layers.accuLinear import AccuLinearLayer
-from KahanMSELoss import KahanMSELoss
+from AccuMSELoss import KahanMSELoss
 from settings import hidden_size, output_size, learning_rate, epochs, precision, X, y, seed
 
 torch.manual_seed(seed)

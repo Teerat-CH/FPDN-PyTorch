@@ -4,14 +4,14 @@ import sys
 import json
 
 scripts_to_run = [
-    "improved.py",
+    "baseline.py",
 ]
 
-num_runs = 100
+num_runs = 50
 
 experiment_dir = os.path.dirname(os.path.abspath(__file__))
 
-for i in range(num_runs):
+for i in range(0, num_runs, 1):
     print(f"\n=== Run Set {i+1}/{num_runs} (Random State: {i}) ===")
     
     env = os.environ.copy()

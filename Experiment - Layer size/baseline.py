@@ -10,6 +10,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from layers.accuLinear import AccuLinearLayer
+from AccuMSELoss import CompensatedMSELoss
 from settings import hidden_size, output_size, learning_rate, epochs, precision, X, y, seed
 from settings import middle_hidden_size
 
@@ -35,7 +36,7 @@ model.to(precision)
 
 loss_fn = nn.MSELoss()
 
-optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 loss_logs = []
 
@@ -51,7 +52,7 @@ for epoch in range(epochs):
     loss_logs.append(loss.item())
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-results_filename = os.path.join(script_dir, "results/baseline_kahan_false_3000.json")
+results_filename = os.path.join(script_dir, "results/baseline_kahan_false_1024.json")
 os.makedirs(os.path.dirname(results_filename), exist_ok=True)
 
 if os.path.exists(results_filename):
@@ -65,7 +66,7 @@ data[str(seed)] = loss_logs
 with open(results_filename, "w") as f:
     json.dump(data, f, indent=4)
 
-# save_dir = os.path.join(script_dir, "savemodels/baseline_kahan_false")
+# save_dir = os.path.join(script_dir, "savemodels/improved_kahan_true")
 # os.makedirs(save_dir, exist_ok=True)
 # model_path = os.path.join(save_dir, f"{seed}.pth")
 

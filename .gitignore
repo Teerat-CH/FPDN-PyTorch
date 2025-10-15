@@ -3,6 +3,7 @@ __pycache__/
 *.py[codz]
 *$py.class
 
+data
 data/GPA.csv
 data/train.csv
 # C extensions
@@ -10,6 +11,7 @@ data/train.csv
 
 /Experiment/savemodels
 # Distribution / packaging
+.DS_Store
 .Python
 build/
 develop-eggs/

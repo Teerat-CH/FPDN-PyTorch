@@ -15,7 +15,8 @@ def compute_diff(fileA, fileB):
     arrA = to_array(expA)
     arrB = to_array(expB)
 
-    diffs = np.abs(arrA - arrB)
+    diffs = np.abs(arrA - arrB)/np.abs(arrB)
+    # diffs = np.percentile(diffs, 95, axis=0)
     # mean_diff = np.percentile(diffs, 99, axis=0)
     mean_diff = np.mean(diffs, axis=0)
     std_diff = np.std(diffs, axis=0)

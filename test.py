@@ -45,8 +45,8 @@ def kahan_dot(X, W):
         front = X[:, i:i+1]
         back = W[i:i+1]
         prod = front * back
-        temp_sum, c_new = two_sum(prod, c)
-        new_result, result_err = two_sum(result, temp_sum)
+        temp_sum, c_new = two_sum(prod, c) # add product with compensation
+        new_result, result_err = two_sum(result, temp_sum) # add temp_sum to result
         result = new_result
         c = c_new + result_err
     return result + c

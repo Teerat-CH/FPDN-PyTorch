@@ -2,7 +2,7 @@ import torch
 import pandas as pd
 import os
 
-middle_hidden_size = 1800
+middle_hidden_size = 1024
 hidden_size = 128
 output_size = 1
 learning_rate = 0.01

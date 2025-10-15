@@ -36,7 +36,7 @@ model.to(precision)
 
 loss_fn = CompensatedMSELoss(kahan=True)
 
-optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 loss_logs = []
 
@@ -52,7 +52,7 @@ for epoch in range(epochs):
     loss_logs.append(loss.item())
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-results_filename = os.path.join(script_dir, "results/improved_kahan_true_1800.json")
+results_filename = os.path.join(script_dir, "results/improved_kahan_true_1024.json")
 os.makedirs(os.path.dirname(results_filename), exist_ok=True)
 
 if os.path.exists(results_filename):
