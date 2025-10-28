@@ -6,6 +6,15 @@ from compensated_ops import compensated_matmul
 class AccuLinearFunction(torch.autograd.Function):
     @staticmethod
     def forward(ctx, input, weight, bias, compensated):
+        # --- Debug code to save tensors ---
+        # This will save the input and weight from the first forward pass
+        if not hasattr(AccuLinearFunction, 'saved_tensors_for_debug'):
+            print("DEBUG: Saving input and weight tensors to files...")
+            torch.save(input, 'debug_input.pt')
+            torch.save(weight, 'debug_weight.pt')
+            AccuLinearFunction.saved_tensors_for_debug = True
+        # --- End of debug code ---
+
         # Save tensors for backward pass and the compensated flag
         ctx.save_for_backward(input, weight)
         ctx.compensated = compensated

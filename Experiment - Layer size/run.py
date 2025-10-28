@@ -7,7 +7,7 @@ scripts_to_run = [
     "baseline.py",
 ]
 
-num_runs = 50
+num_runs = 1
 
 experiment_dir = os.path.dirname(os.path.abspath(__file__))
 
