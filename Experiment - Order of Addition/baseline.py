@@ -3,8 +3,6 @@ import numpy as np
 import os 
 import json
 
-torch.set_printoptions(precision=20)
-
 def matmul(A, B, random_seed=42):
     np.random.seed(random_seed)
 
@@ -22,14 +20,14 @@ def matmul(A, B, random_seed=42):
         result += prod
     return result
 
-input_tensor = torch.load('/Users/teeratc/Documents/FPDN-PyTorch/Experiment - Order of Addition/debug_input.pt')
-weight_tensor = torch.load('/Users/teeratc/Documents/FPDN-PyTorch/Experiment - Order of Addition/debug_weight.pt')
+input_tensor = torch.load('/Users/teeratc/Documents/FPDN-PyTorch/Experiment - Order of Addition/debug_input_49.pt')
+weight_tensor = torch.load('/Users/teeratc/Documents/FPDN-PyTorch/Experiment - Order of Addition/debug_weight_49.pt')
 
 input_np = input_tensor.detach().numpy()
 weight_np = weight_tensor.T.detach().numpy()
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-output_dir = os.path.join(script_dir, "json_outputs_numpy")
+output_dir = os.path.join(script_dir, "json_outputs_numpy_49")
 os.makedirs(output_dir, exist_ok=True)
 
 for run in range(0, 50, 1):

@@ -19,12 +19,12 @@ def compensated_sum_torch(arr):
     c = torch.tensor(0., dtype=dtype, device=device)
 
     for x in flat:
-        s1, e1 = two_sum(s, x)
-        s, e2 = two_sum(s1, c)
-        c = e1 + e2
+        s1, e1 = two_sum(s, x) # should be s, e1 = two_sum(s, x)
+        s, e2 = two_sum(s1, c) # see if this should be removed
+        c = e1 + e2 # c = c + e1
 
-    s, rem = two_sum(s, c)
-    s = s + rem
+    s, rem = two_sum(s, c) # this should be s + c
+    s = s + rem # not useful?
     return s
 
 def compensated_matmul(A, B):

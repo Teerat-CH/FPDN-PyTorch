@@ -4,14 +4,20 @@ import numpy as np
 from compensated_ops import compensated_matmul
 
 class AccuLinearFunction(torch.autograd.Function):
+
+    call_count = 0
+
     @staticmethod
     def forward(ctx, input, weight, bias, compensated):
+        AccuLinearFunction.call_count += 1
+        print(f"Forward called {AccuLinearFunction.call_count} time(s)")
+
         # --- Debug code to save tensors ---
         # This will save the input and weight from the first forward pass
-        if not hasattr(AccuLinearFunction, 'saved_tensors_for_debug'):
+        if not hasattr(AccuLinearFunction, 'saved_tensors_for_debug') or AccuLinearFunction.call_count == 49:
             print("DEBUG: Saving input and weight tensors to files...")
-            torch.save(input, 'debug_input.pt')
-            torch.save(weight, 'debug_weight.pt')
+            torch.save(input, f'debug_input_{AccuLinearFunction.call_count}.pt')
+            torch.save(weight, f'debug_weight_{AccuLinearFunction.call_count}.pt')
             AccuLinearFunction.saved_tensors_for_debug = True
         # --- End of debug code ---
 

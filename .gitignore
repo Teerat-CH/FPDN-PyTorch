@@ -2,8 +2,10 @@
 __pycache__/
 *.py[codz]
 *$py.class
-
+*.json
+*.pt
 data
+*.npz
 data/GPA.csv
 data/train.csv
 # C extensions

@@ -30,11 +30,14 @@ try:
 
     for matrix in matrices:
         diff = np.abs((matrix - baseline))
+        diff = np.divide(diff, np.abs(baseline))
         differences.append(diff)
 
-    mean_diff = np.mean(differences, axis=0)
+    # mean_diff = np.mean(differences, axis=0)
+    p90 = np.percentile(differences, 90, axis=0)
 
-    scalar_differences = mean_diff.flatten().tolist()
+
+    scalar_differences = p90.flatten().tolist()
 
     plt.figure(figsize=(10, 6))
     plt.hist(scalar_differences, bins=30, edgecolor='black', alpha=0.7)
