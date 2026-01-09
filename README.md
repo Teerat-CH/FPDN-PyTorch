@@ -5,6 +5,8 @@ We investigate how errors from floating-point arithmetic affect the training of 
 #### Note
 This repository includes multiple experimental iterations conducted through trial and error. A more organized and refined demo derived from these experiments is available here: https://colab.research.google.com/drive/1oVqbR6DorVDn3-HfVM9TXdsJ-VmM0i_4?usp=sharing
 
+**Advisors**: Prof. Eliot Moss, Prof. Philip Thomas
+
 ## Project Structure
 
 ```
